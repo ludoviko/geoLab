@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>GeoskopMainLab</groupId>
+	<artifactId>GeoskopMainLab</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>unidata-all</id>
+			<name>Unidata All</name>
+			<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>edu.ucar</groupId>
+			<artifactId>cdm-core</artifactId>
+			<version>5.5.3</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>2.0.4</version>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
+
+</project>
