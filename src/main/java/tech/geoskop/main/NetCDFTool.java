@@ -17,7 +17,6 @@ import ucar.ma2.Index;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Range;
 import ucar.nc2.Attribute;
-import ucar.nc2.AttributeContainer;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
@@ -299,7 +298,6 @@ public class NetCDFTool {
 			while (attributes.hasNext()) {
 				Attribute attribute = attributes.next(); 
 				out.printf("Attribute: %s  %n", attribute);
-				out.printf("Attribute name: %s,  value: %s %n", attribute.getName(), attribute.getStringValue());
 			}
 			
 			

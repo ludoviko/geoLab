@@ -1,0 +1,156 @@
+{
+  "vars": [
+    {
+      "name": "spatial_ref",
+      "type": "CHAR",
+      "dims": [
+        {
+          "name": "spatial_ref",
+          "type": "CHAR",
+          "dims": [
+            {
+              "name": "nchar",
+              "size": 256
+            }
+          ],
+          "attributes": [
+            {
+              "name": "crs_wkt",
+              "value": "GEOGCS[\\\"WGS 84\\\",DATUM[\\\"WGS_1984\\\",SPHEROID[\\\"WGS 84\\\",6378137,298.257223563,AUTHORITY[\\\"EPSG\\\",\\\"7030\\\"]],AUTHORITY[\\\"EPSG\\\",\\\"6326\\\"]],PRIMEM[\\\"Greenwich\\\",0,AUTHORITY[\\\"EPSG\\\",\\\"8901\\\"]],UNIT[\\\"degree\\\",0.0174532925199433,AUTHORITY[\\\"EPSG\\\",\\\"9122\\\"]],AUTHORITY[\\\"EPSG\\\",\\\"4326\\\"]]"
+            }
+          ]
+        },
+        {
+          "name": "lat",
+          "type": "FLOAT",
+          "dims": [
+            {
+              "name": "Y",
+              "size": 106
+            },
+            {
+              "name": "X",
+              "size": 213
+            }
+          ],
+          "attributes": [
+            {
+              "name": "standard_name",
+              "value": "latitude"
+            },
+            {
+              "name": "long_name",
+              "value": "latitude"
+            },
+            {
+              "name": "units",
+              "value": "degrees_north"
+            },
+            {
+              "name": "axis",
+              "value": "Y"
+            }
+          ]
+        },
+        {
+          "name": "lon",
+          "type": "FLOAT",
+          "dims": [
+            {
+              "name": "Y",
+              "size": 106
+            },
+            {
+              "name": "X",
+              "size": 213
+            }
+          ],
+          "attributes": [
+            {
+              "name": "standard_name",
+              "value": "longitude"
+            },
+            {
+              "name": "long_name",
+              "value": "longitude"
+            },
+            {
+              "name": "units",
+              "value": "degrees_east"
+            },
+            {
+              "name": "axis",
+              "value": "X"
+            }
+          ]
+        },
+        {
+          "name": "time",
+          "type": "INT",
+          "dims": [
+            {
+              "name": "time",
+              "size": 20088
+            }
+          ],
+          "attributes": [
+            {
+              "name": "units",
+              "value": "minutes since 1850-01-01"
+            },
+            {
+              "name": "calendar",
+              "value": "standard"
+            }
+          ]
+        },
+        {
+          "name": "tas",
+          "type": "FLOAT",
+          "dims": [
+            {
+              "name": "time",
+              "size": 20088
+            },
+            {
+              "name": "Y",
+              "size": 106
+            },
+            {
+              "name": "X",
+              "size": 213
+            }
+          ],
+          "attributes": [
+            {
+              "name": "long_name",
+              "value": "2 metre temperature"
+            },
+            {
+              "name": "units",
+              "value": "K"
+            },
+            {
+              "name": "code",
+              "value": "167"
+            },
+            {
+              "name": "table",
+              "value": "128"
+            },
+            {
+              "name": "CDI_grid_type",
+              "value": "gaussian"
+            },
+            {
+              "name": "CDI_grid_num_LPE",
+              "value": "320"
+            },
+            {
+              "name": "grid_mapping",
+              "value": "spatial_ref"
+            }
+          ]
+        }
+      ]
+    }
