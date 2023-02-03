@@ -16,6 +16,8 @@ import ucar.ma2.Array;
 import ucar.ma2.Index;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Range;
+import ucar.nc2.Attribute;
+import ucar.nc2.AttributeContainer;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
@@ -100,7 +102,7 @@ public class NetCDFTool {
 	}
 
 	/**
-	 * Example orf reading a netcdf file and copy some of its data into a
+	 * Example of reading a netcdf file and copy some of its data into a
 	 * destination file.
 	 * 
 	 * @param args
@@ -125,10 +127,15 @@ public class NetCDFTool {
 			Variable notExisting = ncfile.findVariable(NOT_EXISTING);
 
 			// Ranges
-			Range latRange = new Range(10, 20); // 0, 105
-			Range lonRange = new Range(20, 40); // 0, 212
-			Range mainRange = new Range(0, 0); // 0, 20087
-
+//			Range latRange = new Range(10, 20); // 0, 105
+//			Range lonRange = new Range(20, 40); // 0, 212
+//			Range timeRange = new Range(0, 0); // 0, 20087
+			
+            // inclusive upper bound.
+			Range latRange = new Range(0, latitude.getShape(0) - 1); // 0, 105
+			Range lonRange = new Range(0, longitude.getShape(1) - 1); // 0, 212
+			Range timeRange = new Range(0, 1); // 0, 20087
+			
 			List<Range> latRanges = new ArrayList<>();
 			List<Range> lonRanges = new ArrayList<>();
 
@@ -138,8 +145,8 @@ public class NetCDFTool {
 			lonRanges.add(latRange);
 			lonRanges.add(lonRange);
 
-			List<Range> mainRanges = new ArrayList<>();
-			mainRanges.add(mainRange);
+			List<Range> timeRanges = new ArrayList<>();
+			timeRanges.add(timeRange);
 
 			// spatialRef
 			Dimension spatialRefDim = builder.addDimension(spatialRef.getFullName(), spatialRef.getShape(0));
@@ -164,7 +171,7 @@ public class NetCDFTool {
 					.addAttributes(longitude.attributes());
 
 			// Time
-			Dimension timeDim = builder.addDimension(time.getFullName(), mainRange.last() - (mainRange.first() - 1));
+			Dimension timeDim = builder.addDimension(time.getFullName(), timeRange.last() - (timeRange.first() - 1));
 			List<Dimension> timeDims = new ArrayList<Dimension>();
 			timeDims.add(timeDim);
 
@@ -172,11 +179,17 @@ public class NetCDFTool {
 
 			// main var
 			List<Dimension> mainVarDims = new ArrayList<Dimension>();
+			// Keep order !
 			mainVarDims.add(timeDim);
 			mainVarDims.add(latDim);
 			mainVarDims.add(lonDim);
 
 			builder.addVariable(mainVar.getFullName(), mainVar.getDataType(), mainVarDims)
+			.addAttributes(mainVar.attributes());
+
+			// fake main var 2: precipitation 
+			
+			builder.addVariable("precipitation", mainVar.getDataType(), mainVarDims)
 					.addAttributes(mainVar.attributes());
 
 			// The variables are copied to the destination file.
@@ -196,10 +209,14 @@ public class NetCDFTool {
 
 				// Fortran 0 based inclusive index.
 				Variable timeNew = writer.findVariable(TIME);
-				writer.write(timeNew, time.read(mainRanges));
+				writer.write(timeNew, time.read(timeRanges));
 
-				Variable tasNew = writer.findVariable(TEMPERATURE);
-				writer.write(tasNew, loadMainVar(mainVar, mainRange, latRange, lonRange));
+				Variable mainNew = writer.findVariable(TEMPERATURE);
+				writer.write(mainNew, loadMainVar(mainVar, timeRange, latRange, lonRange));
+
+				Variable fakeNew = writer.findVariable("precipitation");
+				writer.write(fakeNew, loadMainVar(mainVar, timeRange, latRange, lonRange));
+				
 			}
 
 			// The new file is printed on the console to check the contents.
@@ -221,6 +238,11 @@ public class NetCDFTool {
 		}
 	}
 
+	public static void createNetCdf3() {
+		
+	}
+	
+	
 	public static void main2(String[] args) throws IOException, InvalidRangeException {
 
 		try (NetcdfFile ncfile = NetcdfFiles.open(PATH_TO_NET_CDF_FILE)) {
@@ -272,6 +294,15 @@ public class NetCDFTool {
 			out.printf("variable.getDimensionsString() %s %n", variable.getDimensionsString());
 			out.printf("Units: %s %n", variable.getUnitsString());
 			out.printf("Shape %s %n", Arrays.toString(variable.getShape()));
+			Iterator<Attribute> attributes = variable.attributes().iterator();
+			
+			while (attributes.hasNext()) {
+				Attribute attribute = attributes.next(); 
+				out.printf("Attribute: %s  %n", attribute);
+				out.printf("Attribute name: %s,  value: %s %n", attribute.getName(), attribute.getStringValue());
+			}
+			
+			
 			out.printf("Variable %s %n", variable);
 
 			out.println();
@@ -463,7 +494,7 @@ public class NetCDFTool {
 	}
 
 	/**
-	 * Utility for reading the main var using ranges.
+	 * Utility for writing the main var using ranges.
 	 * 
 	 * @param mainVar
 	 * @param mainRange
